@@ -72,6 +72,19 @@ const HomePage: React.FC<HomePageProps> = ({navigation}) => {
     return () => clearTimeout(delay);
   }, [activeRadioBtn, handleSearchTextChange, users, searchText]);
 
+  const renderItem = useCallback(
+    ({item}: {item: ItemTypes}) => {
+      return (
+        <ListView
+          key={item?.id}
+          item={item}
+          onPress={() => navigation.navigate('Details')}
+        />
+      );
+    },
+    [navigation],
+  );
+
   return (
     <Container>
       <ActivityIndicator isVisible={loading} />
@@ -121,13 +134,7 @@ const HomePage: React.FC<HomePageProps> = ({navigation}) => {
           <FlatList
             showsVerticalScrollIndicator={false}
             data={userList}
-            renderItem={({item}: {item: ItemTypes}) => (
-              <ListView
-                key={item?.id}
-                item={item}
-                onPress={() => navigation.navigate('Details')}
-              />
-            )}
+            renderItem={renderItem}
             refreshControl={
               <RefreshControl
                 refreshing={loading}
